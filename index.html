@@ -46,6 +46,23 @@ span.cliente:hover{color:var(--color-acento);text-decoration:underline;}
 #totalVenta,#totalFiado,#totalCompra,#totalDia,#totalFiados,#totalPersonas{
   font-weight:bold;font-size:18px;color:var(--color-primario);
 }
+/* Estilos para el buscador de clientes */
+#buscarCliente{
+  width:150px;
+  padding:5px;
+  margin-left:10px;
+}
+#buscarClienteBtn{
+  padding:5px 8px;
+  margin-left:3px;
+  cursor:pointer;
+}
+.buscar-container{
+  display:flex;
+  justify-content:flex-end;
+  align-items:center;
+  margin-bottom:10px;
+}
 </style>
 </head>
 <body>
@@ -83,6 +100,13 @@ span.cliente:hover{color:var(--color-acento);text-decoration:underline;}
     <h2>Fiados</h2>
     <input type="text" id="cliente" placeholder="Nombre del cliente">
     <button onclick="agregarCliente()">Agregar Cliente</button>
+
+    <!-- Buscador a la derecha con lupa -->
+    <div class="buscar-container">
+      <input type="text" id="buscarCliente" placeholder="Buscar cliente">
+      <button id="buscarClienteBtn" onclick="actualizarListaClientes()">🔍</button>
+    </div>
+
     <h3>Clientes y deuda:</h3>
     <ul id="listaClientes"></ul>
   </div>
@@ -112,12 +136,9 @@ const productos = {
     { "nombre": "Taconuda", "precio": 35 },
     { "nombre": "Taconuda Miller", "precio": 37 },
     { "nombre": "Ultra", "precio": 40 },
-
-    /* NUEVOS PRODUCTOS */
     { "nombre": "Ron de 20", "precio": 20 },
     { "nombre": "Ron de 40", "precio": 40 }
   ],
-
   "Churros":[
     { "nombre": "Doritos", "precio": 5 },
     { "nombre": "Chicharrones", "precio": 10 },
@@ -143,7 +164,6 @@ const productos = {
     { "nombre": "Jalapeños", "precio": 5 },
     { "nombre": "Fritos", "precio": 7 }
   ],
-
   "Bebidas":[
     { "nombre": "Fescos", "precio": 13 },
     { "nombre": "Frescos Personal", "precio": 25 },
@@ -159,7 +179,6 @@ const productos = {
     { "nombre": "Coca 2L", "precio": 53 },
     { "nombre": "Coca Jumbo", "precio": 70 }
   ],
-
   "Otros":[
     { "nombre": "Papel Higiénico", "precio": 20 },
     { "nombre": "Paquete de Cigarro", "precio": 35 },
@@ -172,7 +191,6 @@ const productos = {
     { "nombre": "Super Blue", "precio": 10 },
     { "nombre": "Sopa Instantánea", "precio": 17 }
   ],
-
   "Paquetes":[
     { "nombre":"Caja Salvavida", "precio":430 },
     { "nombre":"Caja Barena", "precio":450 },
@@ -296,8 +314,12 @@ function actualizarListaClientes(){
   listaClientes.innerHTML="";
   let totalFiado=0;
   let personas=0;
+  const busqueda=document.getElementById("buscarCliente").value.toLowerCase();
 
-  for(const nombre in clientes){
+  const nombresOrdenados=Object.keys(clientes).sort();
+  nombresOrdenados.forEach(nombre=>{
+    if(busqueda && !nombre.toLowerCase().includes(busqueda)) return;
+
     const data=clientes[nombre];
     totalFiado+=data.total;
     personas++;
@@ -312,11 +334,7 @@ function actualizarListaClientes(){
     const btnP=document.createElement("button");
     btnP.textContent="Pagó";
     btnP.className="pagado";
-    btnP.onclick=()=>{
-      delete clientes[nombre];
-      saveClientes(clientes);
-      actualizarListaClientes();
-    };
+    btnP.onclick=()=>{ delete clientes[nombre]; saveClientes(clientes); actualizarListaClientes(); };
 
     const btnE=document.createElement("button");
     btnE.textContent="Editar deuda";
@@ -339,28 +357,24 @@ function actualizarListaClientes(){
     li.appendChild(btnP);
     li.appendChild(btnE);
 
-    /* LISTA DETALLADA DE PRODUCTOS */
+    // Lista detallada de productos
     const divDetalle=document.createElement("div");
     divDetalle.style.display="none";
     divDetalle.style.marginLeft="15px";
-
     const listaProd=document.createElement("ul");
-
     data.productos.forEach(p=>{
       const item=document.createElement("li");
       item.textContent=`${p.nombre} - L.${p.precio}`;
       listaProd.appendChild(item);
     });
-
     divDetalle.appendChild(listaProd);
 
-    /* TOTAL DEL CLIENTE */
     const totalTxt=document.createElement("p");
     totalTxt.style.fontWeight="bold";
     totalTxt.textContent="Total del cliente: L." + data.total;
     divDetalle.appendChild(totalTxt);
 
-    /* BOTONES PARA AGREGAR PRODUCTOS */
+    // Botones de agregar productos
     ["Cervezas","Churros","Bebidas","Otros"].forEach(cat=>{
       const btn=document.createElement("button");
       btn.textContent=cat;
@@ -387,13 +401,9 @@ function actualizarListaClientes(){
     });
 
     li.appendChild(divDetalle);
-
-    span.onclick=()=>{
-      divDetalle.style.display=divDetalle.style.display==="none"?"block":"none";
-    };
-
+    span.onclick=()=>{ divDetalle.style.display=divDetalle.style.display==="none"?"block":"none"; };
     listaClientes.appendChild(li);
-  }
+  });
 
   document.getElementById("totalFiados").textContent=totalFiado;
   document.getElementById("totalPersonas").textContent=personas;
@@ -404,14 +414,12 @@ function actualizarListaClientes(){
 ------------------------------------------*/
 function actualizarDashboard(){
   document.getElementById("totalDia").textContent=totalVenta;
-
   let totalFiado=0;
   let personas=0;
   for(const n in clientes){
     totalFiado+=clientes[n].total;
     personas++;
   }
-
   document.getElementById("totalFiados").textContent=totalFiado;
   document.getElementById("totalPersonas").textContent=personas;
 }
@@ -420,11 +428,8 @@ function actualizarDashboard(){
    TABS
 ------------------------------------------*/
 function showTab(tab){
-  ["dashboard","venta","fiado","compra"].forEach(t=>{
-    document.getElementById(t).style.display="none";
-  });
+  ["dashboard","venta","fiado","compra"].forEach(t=>{ document.getElementById(t).style.display="none"; });
   document.getElementById(tab).style.display="block";
-
   document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
   document.querySelector(`.tab[onclick="showTab('${tab}')"]`).classList.add("active");
 }
@@ -436,7 +441,6 @@ crearSecciones("sectionsVenta");
 crearSeccionesCompra();
 actualizarListaClientes();
 actualizarDashboard();
-
 </script>
 </body>
 </html>
