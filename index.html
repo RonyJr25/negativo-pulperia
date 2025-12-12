@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Los Amigos de Negativo</title>
+<link rel="manifest" href="manifest.json">
+
+<style>
+/* --- TU MISMO ESTILO --- */
+:root{
+  --color-primario:#007BFF;
+  --color-secundario:#FF0000;
+  --color-acento:#3399FF;
+}
+body{
+  font-family: Arial, sans-serif;
+  margin:0;padding:0;
+  background:#f0f4f8;
+}
+h1,h2{text-align:center;color:var(--color-primario);}
+.container{
+  max-width:900px;margin:20px auto;padding:15px;
+  background:#fff;border-radius:10px;
+  box-shadow:0 0 15px rgba(0,0,0,0.2);
+}
+.tabs{display:flex;justify-content:space-around;margin-bottom:10px;flex-wrap:wrap;}
+.tab{padding:10px 20px;background:var(--color-primario);color:#fff;border-radius:5px;cursor:pointer;margin:2px;}
+.tab.active{background:var(--color-acento);}
+.section{margin-bottom:20px;}
+.section button{
+  width:100%;padding:10px;background:var(--color-primario);
+  color:#fff;border:none;border-radius:5px;text-align:left;cursor:pointer;margin-bottom:5px;
+}
+.products{display:none;padding:5px 10px;}
+.products button{
+  width:calc(50% - 10px);margin:5px;background:var(--color-acento);
+  color:#fff;border:none;border-radius:5px;padding:10px;cursor:pointer;
+}
+ul{list-style:none;padding:0;}
+li{padding:5px 0;}
+input{padding:5px;width:calc(100% - 12px);margin-bottom:10px;}
+button{cursor:pointer;}
+button.pagado{background:var(--color-secundario);}
+button.editar{background:#FFA500;margin-left:5px;}
+span.cliente:hover{color:var(--color-acento);text-decoration:underline;}
+#totalVenta,#totalFiado,#totalCompra,#totalDia,#totalFiados,#totalPersonas{
+  font-weight:bold;font-size:18px;color:var(--color-primario);
+}
+</style>
+</head>
+<body>
+
+<h1>Los Amigos de Negativo</h1>
+
+<div class="container">
+  <div class="tabs">
+    <div class="tab active" onclick="showTab('dashboard')">Dashboard</div>
+    <div class="tab" onclick="showTab('venta')">Calculadora</div>
+    <div class="tab" onclick="showTab('fiado')">Fiado</div>
+    <div class="tab" onclick="showTab('compra')">Compras</div>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div id="dashboard">
+    <h2>Dashboard</h2>
+    <p>Total de ventas del día: L.<span id="totalDia">0</span></p>
+    <p>Total fiados pendientes: L.<span id="totalFiados">0</span></p>
+    <p>Total personas con deuda: <span id="totalPersonas">0</span></p>
+  </div>
+
+  <!-- VENTAS -->
+  <div id="venta" style="display:none;">
+    <h2>Calculadora de Ventas</h2>
+    <div id="sectionsVenta"></div>
+    <h3>Productos Seleccionados:</h3>
+    <ul id="listaVenta"></ul>
+    <h3>Total: L.<span id="totalVenta">0</span></h3>
+    <button onclick="resetVenta()">Limpiar</button>
+  </div>
+
+  <!-- FIADO -->
+  <div id="fiado" style="display:none;">
+    <h2>Fiados</h2>
+    <input type="text" id="cliente" placeholder="Nombre del cliente">
+    <button onclick="agregarCliente()">Agregar Cliente</button>
+    <h3>Clientes y deuda:</h3>
+    <ul id="listaClientes"></ul>
+  </div>
+
+  <!-- COMPRAS -->
+  <div id="compra" style="display:none;">
+    <h2>Calculadora de Compras</h2>
+    <div id="sectionsCompra"></div>
+    <ul id="listaCompra"></ul>
+    <h3>Total: L.<span id="totalCompra">0</span></h3>
+    <button onclick="resetCompra()">Limpiar</button>
+  </div>
+</div>
+
+<script>
+/* -------------------------------------------------------
+   DATOS DE PRODUCTOS (igual que tu versión)
+--------------------------------------------------------*/
+const productos = {
+  "Cervezas":[
+    { "nombre": "Salvavidas", "precio": 25 }, { "nombre": "Barenas", "precio": 26 },
+    { "nombre": "Miller", "precio": 27 }, { "nombre": "Bud Light", "precio": 30 },
+    { "nombre": "Corona", "precio": 40 }, { "nombre": "Caguama", "precio": 40 },
+    { "nombre": "Taconuda", "precio": 35 }, { "nombre": "Taconuda Miller", "precio": 37 },
+    { "nombre": "Ultra", "precio": 40 }
+  ],
+  "Churros":[
+    { "nombre": "Doritos", "precio": 5 }, { "nombre": "Chicharrones", "precio": 10 },
+    { "nombre": "Zambos", "precio": 8 }, { "nombre": "Rica Sula", "precio": 8 },
+    { "nombre": "Yuquitas", "precio": 5 }, { "nombre": "Zibas", "precio": 10 },
+    { "nombre": "Taqueritos", "precio": 7 }, { "nombre": "Capy", "precio": 7 },
+    { "nombre": "Galletas", "precio": 17 }, { "nombre": "Ranchitas", "precio": 7 },
+    { "nombre": "Tacos", "precio": 5 }, { "nombre": "Ranchitas Naturales", "precio": 10 },
+    { "nombre": "Anillitos", "precio": 5 }, { "nombre": "Gustitos", "precio": 4 },
+    { "nombre": "Papasitas", "precio": 4 }, { "nombre": "Quesitrix", "precio": 4 },
+    { "nombre": "Piguis", "precio": 4 }, { "nombre": "Elotitos", "precio": 5 },
+    { "nombre": "Maní", "precio": 5 }, { "nombre": "Tostecas", "precio": 5 },
+    { "nombre": "Nachos", "precio": 5 }, { "nombre": "Jalapeños", "precio": 5 },
+    { "nombre": "Fritos", "precio": 7 }
+  ],
+  "Bebidas":[
+    { "nombre": "Fescos", "precio": 13 }, { "nombre": "Frescos Personal", "precio": 25 },
+    { "nombre": "Gatorade", "precio": 35 }, { "nombre": "Agua de Bote", "precio": 20 },
+    { "nombre": "Bolsa de Agua", "precio": 4 }, { "nombre": "Marinero", "precio": 20 },
+    { "nombre": "Jugos en Lata", "precio": 20 }, { "nombre": "Bolt", "precio": 15 },
+    { "nombre": "Jugos Pequeños", "precio": 10 }, { "nombre": "Coca 1.1L", "precio": 35 },
+    { "nombre": "Coca 1.5L", "precio": 40 }, { "nombre": "Coca 2L", "precio": 53 },
+    { "nombre": "Coca Jumbo", "precio": 70 }
+  ],
+  "Otros":[
+    { "nombre": "Papel Higiénico", "precio": 20 }, { "nombre": "Paquete de Cigarro", "precio": 35 },
+    { "nombre": "Cigarro Menudeado", "precio": 3 }, { "nombre": "Doble Click", "precio": 8 },
+    { "nombre": "Pack Doble Click", "precio": 100 }, { "nombre": "Naipe", "precio": 20 },
+    { "nombre": "Chile", "precio": 40 }, { "nombre": "Encendedor", "precio": 35 },
+    { "nombre": "Super Blue", "precio": 10 }, { "nombre": "Sopa Instantánea", "precio": 17 }
+  ],
+  "Paquetes":[
+    { "nombre":"Caja Salvavida", "precio":430 }, { "nombre":"Caja Barena", "precio":450 },
+    { "nombre":"Caja Miller", "precio":475 }, { "nombre":"Caja Caguama Salva", "precio":360 },
+    { "nombre":"Caja Caguama Barena", "precio":370 }, { "nombre":"Paquete Guaro", "precio":700 },
+    { "nombre":"Taconuda Salva", "precio":640 }, { "nombre":"Taconuda Barena", "precio":660 },
+    { "nombre":"Ultra", "precio":700 }, { "nombre":"Corona", "precio":700 },
+    { "nombre":"Budligth", "precio":480 }
+  ]
+};
+
+/* -----------------------------------------
+   BASE DE DATOS LOCAL (LocalStorage)
+------------------------------------------*/
+function getClientes(){
+  return JSON.parse(localStorage.getItem("clientes_negativo") || "{}");
+}
+function saveClientes(data){
+  localStorage.setItem("clientes_negativo", JSON.stringify(data));
+}
+
+/* -----------------------------------------
+           SISTEMA DE VENTAS
+------------------------------------------*/
+let totalVenta = 0;
+const listaVenta = document.getElementById("listaVenta");
+
+function agregarItem(nombre,precio,lista,totalVar){
+  const li=document.createElement("li");
+  li.textContent=`${nombre} - L.${precio}`;
+  lista.appendChild(li);
+
+  if(totalVar==="venta"){ 
+    totalVenta+=precio; 
+    document.getElementById("totalVenta").textContent=totalVenta; 
+    actualizarDashboard(); 
+  }
+  if(totalVar==="compra"){ 
+    totalCompra+=precio; 
+    document.getElementById("totalCompra").textContent=totalCompra; 
+  }
+}
+
+function crearSecciones(containerId){
+  const container=document.getElementById(containerId);
+  container.innerHTML="";
+  for(const categoria in productos){
+    if(categoria==="Paquetes") continue;
+    const btnCat=document.createElement("button");
+    btnCat.textContent=categoria;
+    btnCat.onclick=()=>{ const div=btnCat.nextSibling; div.style.display = div.style.display==="none"?"block":"none"; };
+    container.appendChild(btnCat);
+    const divProd=document.createElement("div");
+    divProd.className="products";
+    for(const p of productos[categoria]){
+      const btn=document.createElement("button");
+      btn.textContent=`${p.nombre} - L.${p.precio}`;
+      btn.onclick=()=>agregarItem(p.nombre,p.precio,listaVenta,"venta");
+      divProd.appendChild(btn);
+    }
+    container.appendChild(divProd);
+  }
+}
+
+function resetVenta(){
+  listaVenta.innerHTML="";
+  totalVenta = 0;
+  document.getElementById("totalVenta").textContent=0;
+  actualizarDashboard();
+}
+
+/* -----------------------------------------
+             COMPRAS
+------------------------------------------*/
+let totalCompra=0;
+const listaCompra=document.getElementById("listaCompra");
+
+function crearSeccionesCompra(){
+  const container=document.getElementById("sectionsCompra");
+  container.innerHTML="";
+  for(const p of productos["Paquetes"]){
+    const btn=document.createElement("button");
+    btn.textContent=`${p.nombre} - L.${p.precio}`;
+    btn.onclick=()=>agregarItem(p.nombre,p.precio,listaCompra,"compra");
+    container.appendChild(btn);
+  }
+}
+
+function resetCompra(){
+  listaCompra.innerHTML="";
+  totalCompra=0;
+  document.getElementById("totalCompra").textContent=0;
+}
+
+/* -----------------------------------------
+             FIADOS
+------------------------------------------*/
+let clientes = getClientes();
+
+const listaClientesElem = document.getElementById("listaClientes");
+
+function agregarCliente(){
+  const nombre=document.getElementById("cliente").value.trim();
+  if(!nombre){ alert("Ingresa un nombre"); return; }
+  if(clientes[nombre]){ alert("El cliente ya existe"); return; }
+
+  clientes[nombre] = {
+    total: 0,
+    productos: []
+  };
+  saveClientes(clientes);
+  document.getElementById("cliente").value = "";
+  actualizarListaClientes();
+}
+
+function actualizarListaClientes(){
+  listaClientesElem.innerHTML="";
+  let totalFiado = 0;
+  let totalPersonas = 0;
+
+  for(const nombre in clientes){
+    totalFiado += clientes[nombre].total;
+    totalPersonas++;
+
+    const li=document.createElement("li");
+    li.style.marginBottom="10px";
+
+    const span=document.createElement("span");
+    span.textContent=`${nombre} - L.${clientes[nombre].total}`;
+    span.className="cliente";
+
+    const btn=document.createElement("button");
+    btn.textContent="Pagó";
+    btn.className="pagado";
+    btn.onclick=()=>{
+      delete clientes[nombre];
+      saveClientes(clientes);
+      actualizarListaClientes();
+    };
+
+    const editBtn=document.createElement("button");
+    editBtn.textContent="Editar deuda";
+    editBtn.className="editar";
+    editBtn.onclick=()=>{
+      let pago = prompt(`Cliente: ${nombre}\nMonto actual: L.${clientes[nombre].total}\nIngrese abono (positivo) o cargo (negativo):`, "0");
+      if(pago!==null){
+        pago=parseFloat(pago);
+        if(!isNaN(pago)){
+          let nuevoTotal = clientes[nombre].total - pago;
+          if(nuevoTotal < 0) nuevoTotal = 0;
+          clientes[nombre].total = nuevoTotal;
+          saveClientes(clientes);
+          actualizarListaClientes();
+        }
+      }
+    };
+
+    li.appendChild(span);
+    li.appendChild(btn);
+    li.appendChild(editBtn);
+
+    const divCategorias = document.createElement("div");
+    divCategorias.style.display="none";
+    divCategorias.style.marginLeft="15px";
+
+    ["Cervezas","Churros","Bebidas","Otros"].forEach(cat=>{
+      const btnCat=document.createElement("button");
+      btnCat.textContent=cat;
+      btnCat.onclick=()=>{ 
+        const d = btnCat.nextSibling;
+        d.style.display = d.style.display==="none" ? "block" : "none";
+      };
+
+      const divProd=document.createElement("div");
+      divProd.className="products";
+      divProd.style.marginLeft="15px";
+
+      const divLista=document.createElement("ul");
+      divProd.appendChild(divLista);
+
+      productos[cat].forEach(p=>{
+        const btnProd=document.createElement("button");
+        btnProd.textContent=`${p.nombre} - L.${p.precio}`;
+        btnProd.onclick=()=>{
+          clientes[nombre].productos.push(`${p.nombre} - L.${p.precio}`);
+          clientes[nombre].total += p.precio;
+          saveClientes(clientes);
+          const item=document.createElement("li");
+          item.textContent = `${p.nombre} - L.${p.precio}`;
+          divLista.appendChild(item);
+          actualizarListaClientes();
+        };
+        divProd.appendChild(btnProd);
+      });
+
+      divCategorias.appendChild(btnCat);
+      divCategorias.appendChild(divProd);
+    });
+
+    li.appendChild(divCategorias);
+
+    span.onclick=()=>{ 
+      divCategorias.style.display = divCategorias.style.display==="none"?"block":"none"; 
+    };
+
+    listaClientesElem.appendChild(li);
+  }
+
+  document.getElementById("totalFiados").textContent = totalFiado;
+  document.getElementById("totalPersonas").textContent = totalPersonas;
+}
+
+/* -----------------------------------------
+             DASHBOARD
+------------------------------------------*/
+function actualizarDashboard(){
+  document.getElementById("totalDia").textContent = totalVenta;
+
+  let totalFiado = 0;
+  let totalPersonas = 0;
+  for(const c in clientes){
+    totalFiado += clientes[c].total;
+    totalPersonas++;
+  }
+
+  document.getElementById("totalFiados").textContent = totalFiado;
+  document.getElementById("totalPersonas").textContent = totalPersonas;
+}
+
+/* -----------------------------------------
+             TABS
+------------------------------------------*/
+function showTab(tab){
+  ["dashboard","venta","fiado","compra"].forEach(t=>{
+    document.getElementById(t).style.display="none";
+  });
+  document.getElementById(tab).style.display="block";
+  document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
+  document.querySelector(`.tab[onclick="showTab('${tab}')"]`).classList.add("active");
+}
+
+/* -----------------------------------------
+           INICIALIZACIÓN
+------------------------------------------*/
+crearSecciones("sectionsVenta");
+crearSeccionesCompra();
+actualizarListaClientes();
+actualizarDashboard();
+</script>
+</body>
+</html>
+
+
+
