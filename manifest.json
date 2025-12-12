@@ -14,9 +14,9 @@
       "type": "image/webp"
     },
     {
-      "src": "icons/cerveza.webp",
+      "src": "icons/beer.jpg",
       "sizes": "512x512",
-      "type": "image/webp"
+      "type": "image/jpg"
     }
   ]
 }
