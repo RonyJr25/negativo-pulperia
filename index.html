@@ -7,7 +7,6 @@
 <link rel="manifest" href="manifest.json">
 
 <style>
-/* --- TU MISMO ESTILO --- */
 :root{
   --color-primario:#007BFF;
   --color-secundario:#FF0000;
@@ -100,58 +99,97 @@ span.cliente:hover{color:var(--color-acento);text-decoration:underline;}
 
 <script>
 /* -------------------------------------------------------
-   DATOS DE PRODUCTOS (igual que tu versión)
+   PRODUCTOS
 --------------------------------------------------------*/
 const productos = {
   "Cervezas":[
-    { "nombre": "Salvavidas", "precio": 25 }, { "nombre": "Barenas", "precio": 26 },
-    { "nombre": "Miller", "precio": 27 }, { "nombre": "Bud Light", "precio": 30 },
-    { "nombre": "Corona", "precio": 40 }, { "nombre": "Caguama", "precio": 40 },
-    { "nombre": "Taconuda", "precio": 35 }, { "nombre": "Taconuda Miller", "precio": 37 },
-    { "nombre": "Ultra", "precio": 40 }
+    { "nombre": "Salvavidas", "precio": 25 },
+    { "nombre": "Barenas", "precio": 26 },
+    { "nombre": "Miller", "precio": 27 },
+    { "nombre": "Bud Light", "precio": 30 },
+    { "nombre": "Corona", "precio": 40 },
+    { "nombre": "Caguama", "precio": 40 },
+    { "nombre": "Taconuda", "precio": 35 },
+    { "nombre": "Taconuda Miller", "precio": 37 },
+    { "nombre": "Ultra", "precio": 40 },
+
+    /* NUEVOS PRODUCTOS */
+    { "nombre": "Ron de 20", "precio": 20 },
+    { "nombre": "Ron de 40", "precio": 40 }
   ],
+
   "Churros":[
-    { "nombre": "Doritos", "precio": 5 }, { "nombre": "Chicharrones", "precio": 10 },
-    { "nombre": "Zambos", "precio": 8 }, { "nombre": "Rica Sula", "precio": 8 },
-    { "nombre": "Yuquitas", "precio": 5 }, { "nombre": "Zibas", "precio": 10 },
-    { "nombre": "Taqueritos", "precio": 7 }, { "nombre": "Capy", "precio": 7 },
-    { "nombre": "Galletas", "precio": 17 }, { "nombre": "Ranchitas", "precio": 7 },
-    { "nombre": "Tacos", "precio": 5 }, { "nombre": "Ranchitas Naturales", "precio": 10 },
-    { "nombre": "Anillitos", "precio": 5 }, { "nombre": "Gustitos", "precio": 4 },
-    { "nombre": "Papasitas", "precio": 4 }, { "nombre": "Quesitrix", "precio": 4 },
-    { "nombre": "Piguis", "precio": 4 }, { "nombre": "Elotitos", "precio": 5 },
-    { "nombre": "Maní", "precio": 5 }, { "nombre": "Tostecas", "precio": 5 },
-    { "nombre": "Nachos", "precio": 5 }, { "nombre": "Jalapeños", "precio": 5 },
+    { "nombre": "Doritos", "precio": 5 },
+    { "nombre": "Chicharrones", "precio": 10 },
+    { "nombre": "Zambos", "precio": 8 },
+    { "nombre": "Rica Sula", "precio": 8 },
+    { "nombre": "Yuquitas", "precio": 5 },
+    { "nombre": "Zibas", "precio": 10 },
+    { "nombre": "Taqueritos", "precio": 7 },
+    { "nombre": "Capy", "precio": 7 },
+    { "nombre": "Galletas", "precio": 17 },
+    { "nombre": "Ranchitas", "precio": 7 },
+    { "nombre": "Tacos", "precio": 5 },
+    { "nombre": "Ranchitas Naturales", "precio": 10 },
+    { "nombre": "Anillitos", "precio": 5 },
+    { "nombre": "Gustitos", "precio": 4 },
+    { "nombre": "Papasitas", "precio": 4 },
+    { "nombre": "Quesitrix", "precio": 4 },
+    { "nombre": "Piguis", "precio": 4 },
+    { "nombre": "Elotitos", "precio": 5 },
+    { "nombre": "Maní", "precio": 5 },
+    { "nombre": "Tostecas", "precio": 5 },
+    { "nombre": "Nachos", "precio": 5 },
+    { "nombre": "Jalapeños", "precio": 5 },
     { "nombre": "Fritos", "precio": 7 }
   ],
+
   "Bebidas":[
-    { "nombre": "Fescos", "precio": 13 }, { "nombre": "Frescos Personal", "precio": 25 },
-    { "nombre": "Gatorade", "precio": 35 }, { "nombre": "Agua de Bote", "precio": 20 },
-    { "nombre": "Bolsa de Agua", "precio": 4 }, { "nombre": "Marinero", "precio": 20 },
-    { "nombre": "Jugos en Lata", "precio": 20 }, { "nombre": "Bolt", "precio": 15 },
-    { "nombre": "Jugos Pequeños", "precio": 10 }, { "nombre": "Coca 1.1L", "precio": 35 },
-    { "nombre": "Coca 1.5L", "precio": 40 }, { "nombre": "Coca 2L", "precio": 53 },
+    { "nombre": "Fescos", "precio": 13 },
+    { "nombre": "Frescos Personal", "precio": 25 },
+    { "nombre": "Gatorade", "precio": 35 },
+    { "nombre": "Agua de Bote", "precio": 20 },
+    { "nombre": "Bolsa de Agua", "precio": 4 },
+    { "nombre": "Marinero", "precio": 20 },
+    { "nombre": "Jugos en Lata", "precio": 20 },
+    { "nombre": "Bolt", "precio": 15 },
+    { "nombre": "Jugos Pequeños", "precio": 10 },
+    { "nombre": "Coca 1.1L", "precio": 35 },
+    { "nombre": "Coca 1.5L", "precio": 40 },
+    { "nombre": "Coca 2L", "precio": 53 },
     { "nombre": "Coca Jumbo", "precio": 70 }
   ],
+
   "Otros":[
-    { "nombre": "Papel Higiénico", "precio": 20 }, { "nombre": "Paquete de Cigarro", "precio": 35 },
-    { "nombre": "Cigarro Menudeado", "precio": 3 }, { "nombre": "Doble Click", "precio": 8 },
-    { "nombre": "Pack Doble Click", "precio": 100 }, { "nombre": "Naipe", "precio": 20 },
-    { "nombre": "Chile", "precio": 40 }, { "nombre": "Encendedor", "precio": 35 },
-    { "nombre": "Super Blue", "precio": 10 }, { "nombre": "Sopa Instantánea", "precio": 17 }
+    { "nombre": "Papel Higiénico", "precio": 20 },
+    { "nombre": "Paquete de Cigarro", "precio": 35 },
+    { "nombre": "Cigarro Menudeado", "precio": 3 },
+    { "nombre": "Doble Click", "precio": 8 },
+    { "nombre": "Pack Doble Click", "precio": 100 },
+    { "nombre": "Naipe", "precio": 20 },
+    { "nombre": "Chile", "precio": 40 },
+    { "nombre": "Encendedor", "precio": 35 },
+    { "nombre": "Super Blue", "precio": 10 },
+    { "nombre": "Sopa Instantánea", "precio": 17 }
   ],
+
   "Paquetes":[
-    { "nombre":"Caja Salvavida", "precio":430 }, { "nombre":"Caja Barena", "precio":450 },
-    { "nombre":"Caja Miller", "precio":475 }, { "nombre":"Caja Caguama Salva", "precio":360 },
-    { "nombre":"Caja Caguama Barena", "precio":370 }, { "nombre":"Paquete Guaro", "precio":700 },
-    { "nombre":"Taconuda Salva", "precio":640 }, { "nombre":"Taconuda Barena", "precio":660 },
-    { "nombre":"Ultra", "precio":700 }, { "nombre":"Corona", "precio":700 },
+    { "nombre":"Caja Salvavida", "precio":430 },
+    { "nombre":"Caja Barena", "precio":450 },
+    { "nombre":"Caja Miller", "precio":475 },
+    { "nombre":"Caja Caguama Salva", "precio":360 },
+    { "nombre":"Caja Caguama Barena", "precio":370 },
+    { "nombre":"Paquete Guaro", "precio":700 },
+    { "nombre":"Taconuda Salva", "precio":640 },
+    { "nombre":"Taconuda Barena", "precio":660 },
+    { "nombre":"Ultra", "precio":700 },
+    { "nombre":"Corona", "precio":700 },
     { "nombre":"Budligth", "precio":480 }
   ]
 };
 
 /* -----------------------------------------
-   BASE DE DATOS LOCAL (LocalStorage)
+   LOCALSTORAGE
 ------------------------------------------*/
 function getClientes(){
   return JSON.parse(localStorage.getItem("clientes_negativo") || "{}");
@@ -161,70 +199,74 @@ function saveClientes(data){
 }
 
 /* -----------------------------------------
-           SISTEMA DE VENTAS
+   VENTAS
 ------------------------------------------*/
 let totalVenta = 0;
 const listaVenta = document.getElementById("listaVenta");
 
-function agregarItem(nombre,precio,lista,totalVar){
+function agregarItem(nombre,precio,lista,tipo){
   const li=document.createElement("li");
   li.textContent=`${nombre} - L.${precio}`;
   lista.appendChild(li);
 
-  if(totalVar==="venta"){ 
-    totalVenta+=precio; 
-    document.getElementById("totalVenta").textContent=totalVenta; 
-    actualizarDashboard(); 
+  if(tipo==="venta"){
+    totalVenta+=precio;
+    document.getElementById("totalVenta").textContent=totalVenta;
+    actualizarDashboard();
   }
-  if(totalVar==="compra"){ 
-    totalCompra+=precio; 
-    document.getElementById("totalCompra").textContent=totalCompra; 
+  if(tipo==="compra"){
+    totalCompra+=precio;
+    document.getElementById("totalCompra").textContent=totalCompra;
   }
 }
 
-function crearSecciones(containerId){
-  const container=document.getElementById(containerId);
-  container.innerHTML="";
-  for(const categoria in productos){
-    if(categoria==="Paquetes") continue;
-    const btnCat=document.createElement("button");
-    btnCat.textContent=categoria;
-    btnCat.onclick=()=>{ const div=btnCat.nextSibling; div.style.display = div.style.display==="none"?"block":"none"; };
-    container.appendChild(btnCat);
-    const divProd=document.createElement("div");
-    divProd.className="products";
-    for(const p of productos[categoria]){
-      const btn=document.createElement("button");
-      btn.textContent=`${p.nombre} - L.${p.precio}`;
-      btn.onclick=()=>agregarItem(p.nombre,p.precio,listaVenta,"venta");
-      divProd.appendChild(btn);
-    }
-    container.appendChild(divProd);
+function crearSecciones(id){
+  const cont=document.getElementById(id);
+  cont.innerHTML="";
+  for(const cat in productos){
+    if(cat==="Paquetes") continue;
+
+    const btn=document.createElement("button");
+    btn.textContent=cat;
+    btn.onclick=()=>{ const div=btn.nextSibling; div.style.display=div.style.display==="none"?"block":"none"; };
+    cont.appendChild(btn);
+
+    const div=document.createElement("div");
+    div.className="products";
+
+    productos[cat].forEach(p=>{
+      const b=document.createElement("button");
+      b.textContent=`${p.nombre} - L.${p.precio}`;
+      b.onclick=()=>agregarItem(p.nombre,p.precio,listaVenta,"venta");
+      div.appendChild(b);
+    });
+
+    cont.appendChild(div);
   }
 }
 
 function resetVenta(){
   listaVenta.innerHTML="";
-  totalVenta = 0;
+  totalVenta=0;
   document.getElementById("totalVenta").textContent=0;
   actualizarDashboard();
 }
 
 /* -----------------------------------------
-             COMPRAS
+   COMPRAS
 ------------------------------------------*/
 let totalCompra=0;
 const listaCompra=document.getElementById("listaCompra");
 
 function crearSeccionesCompra(){
-  const container=document.getElementById("sectionsCompra");
-  container.innerHTML="";
-  for(const p of productos["Paquetes"]){
+  const cont=document.getElementById("sectionsCompra");
+  cont.innerHTML="";
+  productos["Paquetes"].forEach(p=>{
     const btn=document.createElement("button");
     btn.textContent=`${p.nombre} - L.${p.precio}`;
     btn.onclick=()=>agregarItem(p.nombre,p.precio,listaCompra,"compra");
-    container.appendChild(btn);
-  }
+    cont.appendChild(btn);
+  });
 }
 
 function resetCompra(){
@@ -234,62 +276,59 @@ function resetCompra(){
 }
 
 /* -----------------------------------------
-             FIADOS
+   FIADOS
 ------------------------------------------*/
-let clientes = getClientes();
-
-const listaClientesElem = document.getElementById("listaClientes");
+let clientes=getClientes();
+const listaClientes=document.getElementById("listaClientes");
 
 function agregarCliente(){
   const nombre=document.getElementById("cliente").value.trim();
-  if(!nombre){ alert("Ingresa un nombre"); return; }
-  if(clientes[nombre]){ alert("El cliente ya existe"); return; }
+  if(!nombre) return alert("Ingrese un nombre");
+  if(clientes[nombre]) return alert("Ese cliente ya existe");
 
-  clientes[nombre] = {
-    total: 0,
-    productos: []
-  };
+  clientes[nombre]={ total:0, productos:[] };
   saveClientes(clientes);
-  document.getElementById("cliente").value = "";
+  document.getElementById("cliente").value="";
   actualizarListaClientes();
 }
 
 function actualizarListaClientes(){
-  listaClientesElem.innerHTML="";
-  let totalFiado = 0;
-  let totalPersonas = 0;
+  listaClientes.innerHTML="";
+  let totalFiado=0;
+  let personas=0;
 
   for(const nombre in clientes){
-    totalFiado += clientes[nombre].total;
-    totalPersonas++;
+    const data=clientes[nombre];
+    totalFiado+=data.total;
+    personas++;
 
     const li=document.createElement("li");
-    li.style.marginBottom="10px";
+    li.style.marginBottom="15px";
 
     const span=document.createElement("span");
-    span.textContent=`${nombre} - L.${clientes[nombre].total}`;
+    span.textContent=`${nombre} - L.${data.total}`;
     span.className="cliente";
 
-    const btn=document.createElement("button");
-    btn.textContent="Pagó";
-    btn.className="pagado";
-    btn.onclick=()=>{
+    const btnP=document.createElement("button");
+    btnP.textContent="Pagó";
+    btnP.className="pagado";
+    btnP.onclick=()=>{
       delete clientes[nombre];
       saveClientes(clientes);
       actualizarListaClientes();
     };
 
-    const editBtn=document.createElement("button");
-    editBtn.textContent="Editar deuda";
-    editBtn.className="editar";
-    editBtn.onclick=()=>{
-      let pago = prompt(`Cliente: ${nombre}\nMonto actual: L.${clientes[nombre].total}\nIngrese abono (positivo) o cargo (negativo):`, "0");
-      if(pago!==null){
-        pago=parseFloat(pago);
-        if(!isNaN(pago)){
-          let nuevoTotal = clientes[nombre].total - pago;
-          if(nuevoTotal < 0) nuevoTotal = 0;
-          clientes[nombre].total = nuevoTotal;
+    const btnE=document.createElement("button");
+    btnE.textContent="Editar deuda";
+    btnE.className="editar";
+    btnE.onclick=()=>{
+      let p=prompt("Ingrese abono (positivo) o cargo (negativo):","0");
+      if(p!==null){
+        p=parseFloat(p);
+        if(!isNaN(p)){
+          let nuevo=data.total-p;
+          if(nuevo<0) nuevo=0;
+          data.total=nuevo;
           saveClientes(clientes);
           actualizarListaClientes();
         }
@@ -297,99 +336,111 @@ function actualizarListaClientes(){
     };
 
     li.appendChild(span);
-    li.appendChild(btn);
-    li.appendChild(editBtn);
+    li.appendChild(btnP);
+    li.appendChild(btnE);
 
-    const divCategorias = document.createElement("div");
-    divCategorias.style.display="none";
-    divCategorias.style.marginLeft="15px";
+    /* LISTA DETALLADA DE PRODUCTOS */
+    const divDetalle=document.createElement("div");
+    divDetalle.style.display="none";
+    divDetalle.style.marginLeft="15px";
 
-    ["Cervezas","Churros","Bebidas","Otros"].forEach(cat=>{
-      const btnCat=document.createElement("button");
-      btnCat.textContent=cat;
-      btnCat.onclick=()=>{ 
-        const d = btnCat.nextSibling;
-        d.style.display = d.style.display==="none" ? "block" : "none";
-      };
+    const listaProd=document.createElement("ul");
 
-      const divProd=document.createElement("div");
-      divProd.className="products";
-      divProd.style.marginLeft="15px";
-
-      const divLista=document.createElement("ul");
-      divProd.appendChild(divLista);
-
-      productos[cat].forEach(p=>{
-        const btnProd=document.createElement("button");
-        btnProd.textContent=`${p.nombre} - L.${p.precio}`;
-        btnProd.onclick=()=>{
-          clientes[nombre].productos.push(`${p.nombre} - L.${p.precio}`);
-          clientes[nombre].total += p.precio;
-          saveClientes(clientes);
-          const item=document.createElement("li");
-          item.textContent = `${p.nombre} - L.${p.precio}`;
-          divLista.appendChild(item);
-          actualizarListaClientes();
-        };
-        divProd.appendChild(btnProd);
-      });
-
-      divCategorias.appendChild(btnCat);
-      divCategorias.appendChild(divProd);
+    data.productos.forEach(p=>{
+      const item=document.createElement("li");
+      item.textContent=`${p.nombre} - L.${p.precio}`;
+      listaProd.appendChild(item);
     });
 
-    li.appendChild(divCategorias);
+    divDetalle.appendChild(listaProd);
 
-    span.onclick=()=>{ 
-      divCategorias.style.display = divCategorias.style.display==="none"?"block":"none"; 
+    /* TOTAL DEL CLIENTE */
+    const totalTxt=document.createElement("p");
+    totalTxt.style.fontWeight="bold";
+    totalTxt.textContent="Total del cliente: L." + data.total;
+    divDetalle.appendChild(totalTxt);
+
+    /* BOTONES PARA AGREGAR PRODUCTOS */
+    ["Cervezas","Churros","Bebidas","Otros"].forEach(cat=>{
+      const btn=document.createElement("button");
+      btn.textContent=cat;
+      btn.onclick=()=>{ 
+        const d=btn.nextSibling;
+        d.style.display=d.style.display==="none"?"block":"none"; 
+      };
+      divDetalle.appendChild(btn);
+
+      const div=document.createElement("div");
+      div.className="products";
+      productos[cat].forEach(p=>{
+        const b=document.createElement("button");
+        b.textContent=`${p.nombre} - L.${p.precio}`;
+        b.onclick=()=>{
+          data.total+=p.precio;
+          data.productos.push({nombre:p.nombre,precio:p.precio});
+          saveClientes(clientes);
+          actualizarListaClientes();
+        };
+        div.appendChild(b);
+      });
+      divDetalle.appendChild(div);
+    });
+
+    li.appendChild(divDetalle);
+
+    span.onclick=()=>{
+      divDetalle.style.display=divDetalle.style.display==="none"?"block":"none";
     };
 
-    listaClientesElem.appendChild(li);
+    listaClientes.appendChild(li);
   }
 
-  document.getElementById("totalFiados").textContent = totalFiado;
-  document.getElementById("totalPersonas").textContent = totalPersonas;
+  document.getElementById("totalFiados").textContent=totalFiado;
+  document.getElementById("totalPersonas").textContent=personas;
 }
 
 /* -----------------------------------------
-             DASHBOARD
+   DASHBOARD
 ------------------------------------------*/
 function actualizarDashboard(){
-  document.getElementById("totalDia").textContent = totalVenta;
+  document.getElementById("totalDia").textContent=totalVenta;
 
-  let totalFiado = 0;
-  let totalPersonas = 0;
-  for(const c in clientes){
-    totalFiado += clientes[c].total;
-    totalPersonas++;
+  let totalFiado=0;
+  let personas=0;
+  for(const n in clientes){
+    totalFiado+=clientes[n].total;
+    personas++;
   }
 
-  document.getElementById("totalFiados").textContent = totalFiado;
-  document.getElementById("totalPersonas").textContent = totalPersonas;
+  document.getElementById("totalFiados").textContent=totalFiado;
+  document.getElementById("totalPersonas").textContent=personas;
 }
 
 /* -----------------------------------------
-             TABS
+   TABS
 ------------------------------------------*/
 function showTab(tab){
   ["dashboard","venta","fiado","compra"].forEach(t=>{
     document.getElementById(t).style.display="none";
   });
   document.getElementById(tab).style.display="block";
+
   document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
   document.querySelector(`.tab[onclick="showTab('${tab}')"]`).classList.add("active");
 }
 
 /* -----------------------------------------
-           INICIALIZACIÓN
+   INIT
 ------------------------------------------*/
 crearSecciones("sectionsVenta");
 crearSeccionesCompra();
 actualizarListaClientes();
 actualizarDashboard();
+
 </script>
 </body>
 </html>
+
 
 
 
