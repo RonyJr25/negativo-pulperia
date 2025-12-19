@@ -23,7 +23,14 @@ h1,h2{text-align:center;color:var(--color-primario);}
   background:#fff;border-radius:10px;
   box-shadow:0 0 15px rgba(0,0,0,0.2);
 }
-.tabs{display:flex;justify-content:space-around;margin-bottom:10px;flex-wrap:wrap;}
+.tabs-container{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  margin-bottom:10px;
+}
+.tabs{display:flex;justify-content:flex-start;flex-wrap:wrap;}
 .tab{padding:10px 20px;background:var(--color-primario);color:#fff;border-radius:5px;cursor:pointer;margin:2px;}
 .tab.active{background:var(--color-acento);}
 .section{margin-bottom:20px;}
@@ -65,14 +72,12 @@ span.cliente:hover{color:var(--color-acento);text-decoration:underline;}
 }
 /* Botón de configuración */
 #configBtn{
-  position:absolute;
-  top:20px;
-  right:30px;
   background:none;
   border:none;
   cursor:pointer;
-  font-size:20px;
+  font-size:24px;
   color:var(--color-primario);
+  margin-left:10px;
 }
 /* Modal de configuración */
 #modalConfig{
@@ -97,6 +102,9 @@ span.cliente:hover{color:var(--color-acento);text-decoration:underline;}
 #agregarProductoContainer input, #agregarProductoContainer select{
   margin-right:5px;
 }
+@media(max-width:600px){
+  #configBtn{font-size:22px;margin-left:5px;}
+}
 </style>
 </head>
 <body>
@@ -104,15 +112,16 @@ span.cliente:hover{color:var(--color-acento);text-decoration:underline;}
 <h1>Los Amigos de Negativo</h1>
 
 <div class="container">
-  <div class="tabs">
-    <div class="tab active" onclick="showTab('dashboard')">Dashboard</div>
-    <div class="tab" onclick="showTab('venta')">Calculadora</div>
-    <div class="tab" onclick="showTab('fiado')">Fiado</div>
-    <div class="tab" onclick="showTab('compra')">Compras</div>
+  <div class="tabs-container">
+    <div class="tabs">
+      <div class="tab active" onclick="showTab('dashboard')">Dashboard</div>
+      <div class="tab" onclick="showTab('venta')">Calculadora</div>
+      <div class="tab" onclick="showTab('fiado')">Fiado</div>
+      <div class="tab" onclick="showTab('compra')">Compras</div>
+    </div>
+    <!-- BOTÓN DE CONFIGURACIÓN A LA PAR DE LAS TABS -->
+    <button id="configBtn" onclick="abrirConfig()">⚙️</button>
   </div>
-
-  <!-- BOTÓN DE CONFIGURACIÓN -->
-  <button id="configBtn" onclick="abrirConfig()">⚙️</button>
 
   <!-- DASHBOARD -->
   <div id="dashboard">
@@ -138,7 +147,6 @@ span.cliente:hover{color:var(--color-acento);text-decoration:underline;}
     <input type="text" id="cliente" placeholder="Nombre del cliente">
     <button onclick="agregarCliente()">Agregar Cliente</button>
 
-    <!-- Buscador a la derecha con lupa -->
     <div class="buscar-container">
       <input type="text" id="buscarCliente" placeholder="Buscar cliente">
       <button id="buscarClienteBtn" onclick="actualizarListaClientes()">🔍</button>
@@ -164,7 +172,6 @@ span.cliente:hover{color:var(--color-acento);text-decoration:underline;}
     <h3>Modificar precios de productos</h3>
     <div id="configProductos"></div>
 
-    <!-- AGREGAR PRODUCTO -->
     <div id="agregarProductoContainer">
       <h4>Agregar nuevo producto</h4>
       <input type="text" id="nuevoNombre" placeholder="Nombre">
@@ -200,7 +207,7 @@ const productos = {
     { "nombre": "Ultra", "precio": 40 },
     { "nombre": "Ron de 20", "precio": 20 },
     { "nombre": "Ron de 40", "precio": 40 },
-    { "nombre": "Gallo", "precio": 27 } // Nuevo producto
+    { "nombre": "Gallo", "precio": 27 }
   ],
   "Churros":[
     { "nombre": "Doritos", "precio": 5 },
@@ -266,8 +273,8 @@ const productos = {
     { "nombre":"Ultra", "precio":700 },
     { "nombre":"Corona", "precio":700 },
     { "nombre":"Budligth", "precio":480 },
-    { "nombre":"Caja de Coca", "precio":245 }, // Nuevo producto
-    { "nombre":"Caja de Pepsi", "precio":240 } // Nuevo producto
+    { "nombre":"Caja de Coca", "precio":245 },
+    { "nombre":"Caja de Pepsi", "precio":240 }
   ]
 };
 
